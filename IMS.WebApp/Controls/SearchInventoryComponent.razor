@@ -1,0 +1,33 @@
+﻿@* no page directive, no page title *@
+
+@* Two-way bind *@
+<div class="input-group">
+    <input type="text"
+        class="form-control" 
+        placeholder="Search for..." 
+        @bind-value="@inventoryNameToSearch"/>
+        <button type="button"
+            class="btn-success input-group-text"
+        @onclick="OnSearch">Search</button>
+</div>
+
+<br/>
+
+@* @inventoryNameToSearch *@
+@*one-way data binding (string-interpolation)*@
+
+@code {
+    @* two-way bind *@
+    private string inventoryNameToSearch = string.Empty;
+
+  @* event call-back to pass user input from textbox to parent control when 'search' is pressed *@
+  [Parameter]
+  public EventCallback<string> OnSearchInventory { get; set; }
+
+  private void OnSearch()
+  {
+    OnSearchInventory.InvokeAsync(inventoryNameToSearch);
+  }
+
+
+}

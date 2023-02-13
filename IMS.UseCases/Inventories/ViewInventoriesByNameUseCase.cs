@@ -1,4 +1,5 @@
 ﻿using IMS.CoreBusiness;
+using IMS.UseCases.Inventories.Interfaces;
 using IMS.UseCases.Inventories.PluginInterfaces;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 // We need to use interface as an abstraction
 namespace IMS.UseCases.Inventories
 {
-  public class ViewInventoriesByNameUseCase
+    public class ViewInventoriesByNameUseCase : IViewInventoriesByNameUseCase
   {
     private readonly IInventoryRepository _inventoryRepository;
     public ViewInventoriesByNameUseCase(IInventoryRepository inventoryRepository)
     {
-      _inventoryRepository = inventoryRepository; 
+      _inventoryRepository = inventoryRepository;
 
     }
     public async Task<IEnumerable<Inventory>> ExecuteAsync(string name = "")
