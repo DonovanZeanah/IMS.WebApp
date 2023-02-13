@@ -12,22 +12,23 @@
 </div>
 
 <br/>
+<InventoryListComponent></InventoryListComponent>
 
 @* @inventoryNameToSearch *@
 @*one-way data binding (string-interpolation)*@
 
 @code {
-    @* two-way bind *@
+ @* two-way bind *@
     private string inventoryNameToSearch = string.Empty;
 
-  @* event call-back to pass user input from textbox to parent control when 'search' is pressed *@
-  [Parameter]
-  public EventCallback<string> OnSearchInventory { get; set; }
+ @* event call-back to pass user input from textbox to parent control when 'search' is pressed *@
+      [Parameter]
+      public EventCallback<string> OnSearchInventory { get; set; }
 
-  private void OnSearch()
-  {
-    OnSearchInventory.InvokeAsync(inventoryNameToSearch);
-  }
+      private void OnSearch()
+      {
+        OnSearchInventory.InvokeAsync(inventoryNameToSearch);
+      }
 
 
 }
