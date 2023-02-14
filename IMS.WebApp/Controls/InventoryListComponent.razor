@@ -1,13 +1,12 @@
-﻿
-@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+﻿@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 <table class="table">
     <thead>
         <tr>
-      <th>Inventory Name</th>
+      @*<th>Inventory Name</th>
             <th>Inventory Quantity</th>
             <th>Inventory Price</th>
             <th> </th>
-      @*<th>Inventory Category</th>
+            <th>Inventory Category</th>
             <th>Inventory Location</th>
             <th>Inventory Date</th>
             <th>Inventory Status</th>
@@ -16,28 +15,25 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var inv in listInventories)
-        {
-            <tr>
-                <td>@inv.InventoryName</td>
-                <td>@inv.Quantity</td>
-                <td>@inv.Price</td>
-                <td>
-                    <button
-                        type="button "class="btn btn-light"></button>
-                </td>
-            </tr>
-        }
+
+@* this Maps 'listInventories'' below, to  just 'Inventory'' field of InventoryListItemComponent.razor
+*@
+    <InventoryListItemComponent Inventories="Inventories">    </InventoryListItemComponent>
+
     </tbody>
 </table>
+
+@*//===;x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=[]=x=x=x=x=x=x=x=x=x=x=x=x=xx=x=x=x=x=x=x=x=[]x=[]*@
+
 @code {
-  private List<Inventory> listInventories = new List<Inventory>();
+
+  private List<Inventory> Inventories = new List<Inventory>();
 
   [Parameter]
   public String SearchTerm { get; set; } = string.Empty;
 
   protected override async Task OnParametersSetAsync()
   {
-    listInventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(this.SearchTerm)).ToList();
+    Inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(this.SearchTerm)).ToList();
   }
 }
