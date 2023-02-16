@@ -18,7 +18,7 @@
 
 @* this Maps 'listInventories'' below, to  just 'Inventory'' field of InventoryListItemComponent.razor
 *@
-    <InventoryListItemComponent Inventories="Inventories">    </InventoryListItemComponent>
+    <InventoryListItemComponent Inventories="listInventories">    </InventoryListItemComponent>
 
     </tbody>
 </table>
@@ -27,13 +27,13 @@
 
 @code {
 
-  private List<Inventory> Inventories = new List<Inventory>();
+  private List<Inventory> listInventories = new List<Inventory>();
 
   [Parameter]
   public String SearchTerm { get; set; } = string.Empty;
 
   protected override async Task OnParametersSetAsync()
   {
-    Inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(this.SearchTerm)).ToList();
+    listInventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(this.SearchTerm)).ToList();
   }
 }
