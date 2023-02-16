@@ -7,9 +7,17 @@ using IMS.WebApp.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//EF
+//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+//builder.Services.AddDbContext<IMSContext>(options =>)
 
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 
