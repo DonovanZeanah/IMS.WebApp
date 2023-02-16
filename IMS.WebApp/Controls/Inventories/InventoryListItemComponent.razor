@@ -1,21 +1,39 @@
-﻿@foreach (var inv in Inventories)
-      {
-            <tr>
-                <td>@inv.InventoryName</td>
-                <td>@inv.Quantity</td>
-                <td>@inv.Price.ToString("c")</td>
-                <td>
-                    <button type="button"
-                        class="btn btn-light">
-                        Edit
-                    </button>
-                </td>
-            </tr>
-      }
+﻿
+@inject NavigationManager NavigationManager
+
+@foreach (var inv in Inventories)
+{
+  <tr>
+      <td>@inv.InventoryName</td>
+      <td>@inv.Quantity</td>
+      <td>@inv.Price.ToString("c")</td>
+      <td>
+          <button type="button"
+                class="btn btn-light"
+                @onclick="@(() => EditInventory(inv.InventoryId))">Edit
+
+                @* 
+            @onclick="EditInventory(inv.InventoryId)"> [original]
+            - use an arrow func for method with param -- (onclick event handler is an event callback - a struct - 
+            that wraps around delegate. supposed to assign delegate. method without param works like a delegate.
+            attach a parameter and its not a delegate anymore. arrow func provides a delegate, then can call edit 
+            inv method within the function.)
+            *@                        
+          </button>
+      </td>
+  </tr>
+}
 @code {
 
-    // pass the Inventories from parent to child through parameter
-[Parameter]
-public List<Inventory> Inventories { get; set; } = new List<Inventory>();
+  // pass the Inventories from parent to child through parameter
+  [Parameter]
+  public List<Inventory> Inventories { get; set; } = new List<Inventory>();
+
+  private void EditInventory(int inventoryId)
+  {
+    NavigationManager.NavigateTo($"/editinventory/{inventoryId}");
+  }
+
+
 
 }
