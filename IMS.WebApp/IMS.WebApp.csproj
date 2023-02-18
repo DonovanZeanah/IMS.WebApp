@@ -7,14 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Pages\Inventories\AddInventory.razor" />
+    <None Include="Pages\Inventories\EditInventory.razor" />
+    <None Include="Pages\Inventories\InventoryList.razor" />
+    <None Include="Pages\Products\AddProduct.razor" />
+    <None Include="Pages\Products\EditProduct.razor" />
+    <None Include="Pages\Products\ProductList.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IMS.CoreBusiness\IMS.CoreBusiness.csproj" />
-    <ProjectReference Include="..\IMS.DataStore.HardCoded\IMS.DataStore.HardCoded.csproj" />
-    <ProjectReference Include="..\IMS.Plugins.EFCore\IMS.Plugins.EFCore.csproj" />
-    <ProjectReference Include="..\IMS.Plugins.InMemory\IMS.Plugins.InMemory.csproj" />
     <ProjectReference Include="..\IMS.UseCases\IMS.UseCases.csproj" />
   </ItemGroup>
 

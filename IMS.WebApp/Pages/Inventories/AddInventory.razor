@@ -1,27 +1,27 @@
 ﻿@page "/addInventory"
+@using IMS.CoreBusiness.Models;
 @inject IAddInventoryUseCase AddInventoryUseCase
 @inject NavigationManager NavigationManager
 
 <h3>Add Inventory</h3>
-<br/>
+<br />
 <EditForm Model="inventory" OnValidSubmit="SaveInventory">
     <DataAnnotationsValidator>  </DataAnnotationsValidator>
     <ValidationSummary> </ValidationSummary>
 
     <div class="form-group">
         <label for="name">Inventory Name</label>
-        <InputText 
-            id="name" 
-            @bind-Value="inventory.InventoryName"
-            class="form-control">
+        <InputText id="name"
+                   @bind-Value="inventory.InventoryName"
+                   class="form-control">
         </InputText>
     </div>
 
     <div class="form-group">
         <label for="quantity">Quantity</label>
         <InputNumber id="quantity"
-                   @bind-Value="inventory.Quantity"
-                   class="form-control">
+                     @bind-Value="inventory.Quantity"
+                     class="form-control">
         </InputNumber>
     </div>
 
@@ -32,7 +32,7 @@
                      class="form-control">
         </InputNumber>
     </div>
-    <br/>
+    <br />
     <button type="submit" class="btn btn-primary">Save</button>
     <button type="button" class="btn btn-primary" @onclick="Cancel">Cancel</button>
 

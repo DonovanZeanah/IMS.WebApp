@@ -1,0 +1,42 @@
+﻿@  using IMS.CoreBusiness.Models;
+@  using IMS.UseCases.Products.Interfaces;
+  using IMS.UseCases.AdminPortal.Products.Interfaces;
+@inject IViewProductsByNameUseCase ViewProductsByNameUseCase
+<table class="table">
+    <thead>
+        <tr>
+      @*<th>Product Name</th>
+            <th>Product Quantity</th>
+            <th>Product Price</th>
+            <th> </th>
+            <th>Product Category</th>
+            <th>Product Location</th>
+            <th>Product Date</th>
+            <th>Product Status</th>
+            <th>Product Image</th>
+            <th>Product Action</th>*@
+        </tr>
+    </thead>
+    <tbody>
+
+@* this Maps 'listProducts'' below, to  just 'Product'' field of ProductListItemComponent.razor
+*@
+    <ProductListItemComponent Products="listProducts">    </ProductListItemComponent>
+
+    </tbody>
+</table>
+
+@*//===;x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=[]=x=x=x=x=x=x=x=x=x=x=x=x=xx=x=x=x=x=x=x=x=[]x=[]*@
+
+@code {
+
+  private List<Product> listProducts = new List<Product>();
+
+  [Parameter]
+  public String SearchTerm { get; set; } = string.Empty;
+
+  protected override async Task OnParametersSetAsync()
+  {
+    listProducts = (await ViewProductsByNameUseCase.ExecuteAsync(this.SearchTerm)).ToList();
+  }
+}

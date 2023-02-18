@@ -1,9 +1,10 @@
 ﻿using IMS.CoreBusiness;
+using IMS.CoreBusiness.Models;
 using IMS.UseCases.Inventories.PluginInterfaces;
 
 namespace IMS.Plugins.InMemory
 {
-  public class InventoryRepository : IInventoryRepository
+    public class InventoryRepository : IProductRepository
   {
     private List<Inventory> _inventories;
     public InventoryRepository()

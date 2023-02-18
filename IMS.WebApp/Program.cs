@@ -1,6 +1,5 @@
-using IMS.Plugins.InMemory;
-using IMS.UseCases.Inventories;
-using IMS.UseCases.Inventories.Interfaces;
+using IMS.UseCases.AdminPortal.Inventories;
+using IMS.UseCases.AdminPortal.Inventories.Interfaces;
 using IMS.UseCases.Inventories.PluginInterfaces;
 using IMS.WebApp.Data;
 
@@ -19,12 +18,12 @@ builder.Services.AddSingleton<WeatherForecastService>();
 
 //builder.Services.AddDbContext<IMSContext>(options =>)
 
-builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
+builder.Services.AddSingleton<IProductRepository, InventoryRepository>();
 
-builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
-builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
-builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
-builder.Services.AddTransient<IViewInventoryByIdUseCase , ViewInventoryByIdUseCase>();
+builder.Services.AddTransient<IViewProductsByNameUseCase, ViewProductsByNameUseCase>();
+builder.Services.AddTransient<IAddProductUseCase, AddProductUseCase>();
+builder.Services.AddTransient<IEditProductUseCase, EditIProductUseCase>();
+builder.Services.AddTransient<IViewProductByIdUseCase , ViewProductByIdUseCase>();
 
 var app = builder.Build();
 
