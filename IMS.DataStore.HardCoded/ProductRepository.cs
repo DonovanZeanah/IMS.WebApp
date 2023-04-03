@@ -1,10 +1,9 @@
 ﻿using IMS.CoreBusiness.Models;
-using IMS.CoreBusiness.PluginInterfaces.DataStore;
 
 namespace IMS.DataStore.HardCoded
 {
-  public class ProductRepository : IProductRepository
-  {
+    public class ProductRepository : CoreBusiness.PluginInterfaces.DataStore.IProductRepository
+    {
     private List<Product> _products;
     public ProductRepository() 
     {
