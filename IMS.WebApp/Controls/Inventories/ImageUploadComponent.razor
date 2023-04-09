@@ -1,0 +1,18 @@
+﻿@page "/imageupload"
+
+<InputFile OnChange="@OnFileSelected" accept="image/*" />
+
+@code {
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+    // Read the file and perform any desired operations
+            using (var stream = file.OpenReadStream())
+            {
+    // Read the file content, convert it to base64, or perform other operations
+            }
+        }
+    }
+}

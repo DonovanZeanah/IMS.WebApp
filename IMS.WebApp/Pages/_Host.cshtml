@@ -1,8 +1,26 @@
-﻿@page "/"
+﻿@page "/" 
+@*// Indicates _host.cshtml handles the apps root path*@
+
+
 @namespace IMS.WebApp.Pages
+@*// Sets namespace for current razor view*@
+
+
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@*// tag helpers from the specified assembly, enabling the use of tag helpers in the Razor view.*@
+
+
 @{
     Layout = "_Layout";
 }
+
+@*// _Layout includes setup of relative links, stylesheet, blazor.server.js *@
+
+@*^^ // uses the <component> tag helper to render the App component with the ServerPrerendered render mode. 
+The ServerPrerendered mode enables the server to pre-render the component before sending it to the client, 
+which can improve the perceived loading time of the application.*@
+
+
 
 <component type="typeof(App)" render-mode="ServerPrerendered" />

@@ -1,8 +1,10 @@
-using IMS.Plugins.InMemory;
+using IMS.plugins.DataStore.HardCoded;
 using IMS.UseCases.Inventories;
 using IMS.UseCases.Inventories.Interfaces;
-using IMS.UseCases.Inventories.PluginInterfaces;
-using IMS.WebApp.Data;
+using IMS.UseCases.PluginInterfaces.DataStore;
+using IMS.UseCases.SearchProductScreen;
+using IMS.UseCases.SearchProductScreen.interfaces;
+using InventoryRepository = IMS.Plugins.InMemory.InventoryRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,16 +17,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+
+//builder.Services.AddSingleton<WeatherForecastService>();
 
 //builder.Services.AddDbContext<IMSContext>(options =>)
 
-builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<ISearchProduct, SearchProduct>();
+builder.Services.AddTransient<IViewProduct, ViewProduct>();
 
+
+builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
 builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
 builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
 builder.Services.AddTransient<IViewInventoryByIdUseCase , ViewInventoryByIdUseCase>();
+
 
 var app = builder.Build();
 
@@ -43,6 +51,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapBlazorHub();
+
 app.MapFallbackToPage("/_Host");
 
 app.Run();

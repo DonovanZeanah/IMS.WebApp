@@ -1,19 +1,39 @@
-﻿using IMS.CoreBusiness;
-using IMS.UseCases.Inventories.PluginInterfaces;
+﻿using IMS.CoreBusiness.Models;
+using IMS.UseCases.Inventories.Interfaces;
 
 namespace IMS.Plugins.InMemory
 {
-  public class InventoryRepository : IInventoryRepository
+    public class InventoryRepository : IInventoryRepository
   {
     private List<Inventory> _inventories;
     public InventoryRepository()
     {
       _inventories = new List<Inventory>()
       {
-        new Inventory() { InventoryId = 1, InventoryName = "Tripod", Quantity = 10, Price = 30 },
-        new Inventory() { InventoryId = 2, InventoryName = "Quickplate", Quantity = 100, Price = 20 },
-        new Inventory() { InventoryId = 3, InventoryName = "Powerpole", Quantity = 100, Price = 12 },
-        new Inventory() { InventoryId = 4, InventoryName = "Lensclothe", Quantity = 100, Price = 1 },
+          new Inventory() { InventoryId = 1, InventoryName = "Steering Wheel", Quantity = 10, Price = 30 },
+        new Inventory() { InventoryId = 2, InventoryName = "Brake Pad", Quantity = 20, Price = 15 }       ,
+        new Inventory() { InventoryId = 3, InventoryName = "Air Filter", Quantity = 50, Price = 5 }       ,
+        new Inventory() { InventoryId = 4, InventoryName = "Spark Plug", Quantity = 100, Price = 2 }      ,
+        new Inventory() { InventoryId = 5, InventoryName = "Oil Filter", Quantity = 30, Price = 10 }      ,
+        new Inventory() { InventoryId = 6, InventoryName = "Tire", Quantity = 15, Price = 50 }            ,
+        new Inventory() { InventoryId = 7, InventoryName = "Battery", Quantity = 5, Price = 100 }         ,
+        new Inventory() { InventoryId = 8, InventoryName = "Wiper Blade", Quantity = 25, Price = 7 }      ,
+        new Inventory() { InventoryId = 9, InventoryName = "Alternator", Quantity = 2, Price = 150 }      ,
+        new Inventory() { InventoryId = 10, InventoryName = "Radiator", Quantity = 3, Price = 80 }        ,
+        new Inventory() { InventoryId = 11, InventoryName = "Shock Absorber", Quantity = 8, Price = 40 }  ,
+        new Inventory() { InventoryId = 12, InventoryName = "Fuel Filter", Quantity = 20, Price = 12 }    ,
+        new Inventory() { InventoryId = 13, InventoryName = "Serpentine Belt", Quantity = 12, Price = 18 },
+        new Inventory() { InventoryId = 14, InventoryName = "Water Pump", Quantity = 5, Price = 75 }      ,
+        new Inventory() { InventoryId = 15, InventoryName = "Starter Motor", Quantity = 3, Price = 120 }  ,
+        new Inventory() { InventoryId = 16, InventoryName = "Brake Rotor", Quantity = 6, Price = 60 }     ,
+        new Inventory() { InventoryId = 17, InventoryName = "Timing Belt", Quantity = 8, Price = 25 }     ,
+        new Inventory() { InventoryId = 18, InventoryName = "Headlight Bulb", Quantity = 30, Price = 5 }  ,
+        new Inventory() { InventoryId = 19, InventoryName = "Exhaust Pipe", Quantity = 4, Price = 90 }    ,
+        new Inventory() { InventoryId = 20, InventoryName = "Oxygen Sensor", Quantity = 5, Price = 50 }   ,
+        new Inventory() { InventoryId = 21, InventoryName = "Steering Wheel", Quantity = 10, Price = 30 },
+        new Inventory() { InventoryId = 22, InventoryName = "Driver Seat", Quantity = 100, Price = 20 },
+        new Inventory() { InventoryId = 23, InventoryName = "Battery Bank", Quantity = 100, Price = 12 },
+        new Inventory() { InventoryId = 24, InventoryName = "Drive Motor", Quantity = 100, Price = 1 }
       };
     }
 

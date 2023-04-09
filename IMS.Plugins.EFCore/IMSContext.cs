@@ -1,4 +1,4 @@
-﻿using IMS.CoreBusiness;
+﻿using IMS.CoreBusiness.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IMS.Plugins.InMemory
 {
-  public class IMSContext : DbContext
+    public class IMSContext : DbContext
   {
     public IMSContext(DbContextOptions options) : base(options)
     {

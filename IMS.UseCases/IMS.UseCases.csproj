@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewInventoriesScreen\PluginInterfaces\**" />
+    <EmbeddedResource Remove="ViewInventoriesScreen\PluginInterfaces\**" />
+    <None Remove="ViewInventoriesScreen\PluginInterfaces\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\IMS.CoreBusiness\IMS.CoreBusiness.csproj" />
   </ItemGroup>
 

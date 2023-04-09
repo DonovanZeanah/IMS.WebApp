@@ -1,0 +1,68 @@
+﻿@page "/TaskList"
+@namespace IMS.WebApp.Pages
+
+<h3>TaskList</h3>
+
+@if (taskList.Count > 0)
+{
+    <div class="progress my-2">
+        <div class="progress-bar" role="progressbar"
+             style="width: @(percentDone)%"
+             aria-valuemin="0" aria-valuemax="100">@(percentDone)</div>
+    </div>
+}
+<br/>
+
+
+ <EditForm class="form-check-inline my-2" Model="@newTask" OnValidSubmit="AddTask">
+     @*<InputText class="form-control mx-2" @bind-Value="newTask.Task" />
+    <button class="btn btn-outline-primary" type="submit">Add Task</button>*@
+     <InputText class="form-control d-inline-block mr-2" @bind-Value="newTask.Task" />
+    <button class="btn btn-outline-primary d-inline-block" type="submit">Add Task</button>
+ </EditForm>
+
+@*//^^// this is a razor element, but it is not a component. It is a built-in element that is part of the razor syntax.
+    It is a form that is bound to the newTask object. The form is bound to the newTask object by the Model attribute. 
+    Non-Razor-binding fields in here, like class="", are html attributes, and are not part of the razor syntax, rather "fall-down" into
+    the html syntax. The @bind-Value attribute is a razor binding attribute. It is a two-way binding, meaning that the form field
+is bound to the newTask object, and the newTask object is bound to the form field.
+*@
+
+<ul class="list-group">
+    @foreach (var task in taskList)
+    {
+        @if (task.IsComplete)
+        {
+            <li class="list-group-item list-group-item-secondary my-1"
+                @onclick="(()=>task.IsComplete = !task.IsComplete)">
+                <del>@task.Task</del>
+            </li>
+        }
+        else
+        {
+            <li class="list-group-item list-group-item-success my-1"
+                @onclick="(()=>task.IsComplete = !task.IsComplete)">
+                @task.Task
+            </li>
+
+        }
+        @*//Origin// <li class="list-group-item list-group-item-success my-1">@task.Task</li>*@
+    }
+</ul>
+
+@code {
+    private List<TaskModel> taskList = new List<TaskModel>();
+    private TaskModel newTask = new TaskModel();
+
+    private int percentDone
+    {
+        get { return (taskList.Count(x => x.IsComplete) * 100) / taskList.Count; }
+    }
+
+    private void AddTask()
+    { // this method doesnt need newTask as a parameter because it is already bound to the form (available to the method inherently)
+
+        taskList.Add(newTask);
+        newTask = new TaskModel(); //clear the form after adding a task
+    }
+}
