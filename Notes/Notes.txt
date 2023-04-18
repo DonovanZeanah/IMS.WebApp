@@ -1,0 +1,44 @@
+
+
+# Fields vs Properties 
+Fields are used to store data within a class, while properties are used to expose data for external use.
+Fields are private by default and are accessed only from within the class, while properties are used to provide controlled access to the fields.
+
+For example, you might have a private field named _count in a class, which stores the number of times a method is called. 
+You could use a public property named Count to allow other code to read the value of the _count field, but prevent other code from modifying it directly.
+
+;//
+
+# Region usage 
+#region ===[ Private Members ]=============================================================
+
+//code private readonly IConfiguration _configuration;
+
+#endregion
+
+;//
+
+# Transients vs. Singletons vs. Scoped
+//Transient is the default lifetime. This means that a new instance of the service will be provided to every class that requests it.
+//Singleton means that a single instance of the service will be created and that single instance will be provided to every class that requests it.
+//Scoped means that a single instance of the service will be created for each web request.
+
+;//
+
+# Razor Files
+
+View, State, and Event are in one file, opposed to mvc structure, and will grow into a large messy file if not broken down.
+Therefore, Pages should contain small components written in their own files, and then imported into the main page.
+
+;//
+
+# Component architecture
+
+Within the WebApp,
+A folder dedicated to the many components that make up the pages; typically called:
+
+'Controls' / 'Components' / 'Widgets' / 'Modules' / 'Elements' / 
+'Blocks' / 'Sections' / 'Parts' / 'Snippets' / 'Chunks' / 'Fragments' 
+/ 'Pieces' / 'Units' / 'Items' / 'Tiles' / 'Panels' / 'Boxes'
+
+

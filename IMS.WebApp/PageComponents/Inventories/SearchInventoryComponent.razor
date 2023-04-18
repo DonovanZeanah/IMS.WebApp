@@ -1,0 +1,92 @@
+﻿@* no page directive, no page title *@
+
+
+
+<div class="input-group" style="border: 1px solid red;">
+
+    <input type="text"
+           class="form-control"
+           placeholder="Search for..."
+           @bind-value="@inventoryNameToSearch"
+           @oninput="OnSearch" />
+
+
+    <button type="button"
+            class="btn-success input-group-text"
+            @onclick="OnSearch">
+        Search
+    </button>
+</div> @* Two-way bind *@@*added style="border: 1px solid red;"*@
+
+
+<br />
+
+
+<InventoryListComponent SearchTerm="@inventoryNameToSearch"></InventoryListComponent>
+
+@*added SearchTerm="@inventoryNameToSearch"*@
+
+
+@* @inventoryNameToSearch *@
+@*one-way data binding (string-interpolation)*@
+
+@code {
+    private string inventoryNameToSearch = string.Empty;
+
+    [Parameter]
+    public string SearchTerm { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSearchInventory { get; set; }
+
+    private async Task OnSearch()
+    {
+        await OnSearchInventory.InvokeAsync(inventoryNameToSearch);
+    }
+
+    protected override void OnParametersSet()
+    {
+        inventoryNameToSearch = SearchTerm;
+    }
+    private async Task FilterInventory()
+    {
+        await OnSearchInventory.InvokeAsync(SearchTerm);
+    }
+    /*Then, in the main page, you would need to modify the SearchInventoryComponent to pass the searchTerm value to the OnSearchInventory event:
+    <SearchInventoryComponent SearchTerm="@searchTerm" OnSearchInventory="OnInventorySearch"></SearchInventoryComponent>
+    And remove the InventoryListComponent from the main page:
+
+
+    <InventoryListComponent SearchTerm="@searchTerm"></InventoryListComponent>
+    Finally, you need to update the OnInventorySearch method to set the searchTerm value:
+
+
+    private void OnInventorySearch(string searchTerm)
+        {
+        this.searchTerm = searchTerm;
+    }
+    With these changes, the InventoryListComponent should be updated with the search term entered in the SearchInventoryComponent.
+    */
+
+}
+
+
+
+
+
+@*    @code {*@
+@* two-way bind
+    private string inventoryNameToSearch = string.Empty;
+
+ @* event call-back to pass user input from textbox to parent control when 'search' is pressed
+      [Parameter]
+      public EventCallback<string> OnSearchInventory { get; set; }
+
+      private void OnSearch()
+      {
+        OnSearchInventory.InvokeAsync(inventoryNameToSearch);
+      }
+
+
+}
+*@

@@ -1,6 +1,10 @@
 using IMS.plugins.DataStore.HardCoded;
-using IMS.UseCases.Inventories;
-using IMS.UseCases.Inventories.Interfaces;
+using IMS.UseCases._PluginInterfaces_.DataStore;
+using IMS.UseCases.ContactsUseCases;
+using IMS.UseCases.InventoryUseCases;
+using IMS.UseCases.InventoryUseCases.Interfaces;
+using IMS.UseCases.MercedesUseCases;
+using IMS.UseCases.MercedesUseCases.interfaces;
 using IMS.UseCases.PluginInterfaces.DataStore;
 using IMS.UseCases.SearchProductScreen;
 using IMS.UseCases.SearchProductScreen.interfaces;
@@ -22,16 +26,36 @@ builder.Services.AddServerSideBlazor();
 
 //builder.Services.AddDbContext<IMSContext>(options =>)
 
+
+
+// =========================   \\interfaces and their \\implementation
+builder.Services.AddTransient<IContactRepository, ContactRepository>();
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+
+//=========================================================================================== 
+builder.Services.AddTransient<IMercedesRepository, MercedesRepository>();
+
+builder.Services.AddTransient<ISearchMercede, SearchMercede>();
+builder.Services.AddTransient<IViewMercede, ViewMercede>();
+
+
+
+//=========================================================================================== 
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
+
 builder.Services.AddTransient<ISearchProduct, SearchProduct>();
 builder.Services.AddTransient<IViewProduct, ViewProduct>();
 
-
+//=========================================================================================== 
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
+
 builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
 builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
 builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
 builder.Services.AddTransient<IViewInventoryByIdUseCase , ViewInventoryByIdUseCase>();
+//=========================================================================================== 
+
 
 
 var app = builder.Build();

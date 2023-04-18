@@ -1,0 +1,12 @@
+﻿@using IMS.CoreBusiness.Models
+@namespace IMS.WebApp.Pages
+
+<div>
+    <h5>@Product.Name</h5>
+    <p>@Product.Description</p>
+</div>
+
+@code {
+    [Parameter]
+    public Product Product { get; set; }
+}

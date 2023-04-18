@@ -1,0 +1,42 @@
+﻿@using IMS.CoreBusiness.Models
+@namespace IMS.WebApp.Pages
+
+<ul>
+    @foreach (var prod in FilteredProducts)
+    {
+        <li>
+            <ListItem_Component Product="@prod"></ListItem_Component>
+        </li>
+    }
+</ul>
+
+@code {
+    [Parameter]
+    public List<Product> Products { get; set; }
+
+    [Parameter]
+    public string SearchTerm { get; set; }
+
+    [Parameter]
+    public List<Product> FilteredProducts { get; set; }
+
+    protected override void OnInitialized()
+    {
+        UpdateFilteredProducts();
+    }
+
+    protected override void OnParametersSet()
+    {
+        UpdateFilteredProducts();
+    }
+
+    private void UpdateFilteredProducts()
+    {
+        Console.WriteLine($"Filtering products by: {SearchTerm}");
+
+        FilteredProducts = string.IsNullOrEmpty(SearchTerm)
+            ? Products
+            : Products.Where(i => i.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+        Console.WriteLine($"(List_Component)Filtered products count in List_Component: {FilteredProducts.Count}");
+    }
+}

@@ -1,5 +1,5 @@
 ﻿using IMS.CoreBusiness.Models;
-using IMS.UseCases.Inventories.Interfaces;
+using IMS.UseCases.InventoryUseCases.Interfaces;
 
 namespace IMS.Plugins.InMemory
 {

@@ -1,0 +1,41 @@
+﻿@page "/mercedes"
+@using System.Collections
+@using IMS.CoreBusiness.Models
+@using IMS.UseCases.MercedesUseCases
+@using IMS.UseCases.PluginInterfaces.DataStore
+@using IMS.WebApp.PageComponents.Mercedes
+
+@inject ISearchMercede searchMercede
+
+<h3>Search Mercedes</h3>
+
+<br/>
+
+
+<SearchBar_OnClick_Component></SearchBar_OnClick_Component>
+
+
+<ul>
+
+ 
+    @foreach (var merc in mercedes)
+    {
+        <li>
+            @merc.Year @merc.Model 
+        </li>
+    }
+    
+
+</ul>
+
+
+@code {
+    private IEnumerable<Mercede> mercedes;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Console.WriteLine("SearchMercedesComponent.OnInitialized");
+        mercedes = searchMercede.Execute();
+    }
+
+}

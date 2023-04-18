@@ -1,0 +1,48 @@
+﻿@using IMS.CoreBusiness.Models
+@namespace IMS.WebApp.Pages
+
+
+<div>
+    <SearchBar_Component SearchTerm="@searchTerm" OnSearch="OnSearchInput"></SearchBar_Component>
+    <List_Component Products="@products" SearchTerm="@searchTerm" FilteredProducts="@FilteredProducts" />
+@if (FilteredProducts != null)
+{
+    @foreach (var prod in FilteredProducts)
+    {
+        <p>@prod.Name - @prod.Description</p>
+    }
+}
+    else
+    {
+        @foreach (var prod in products)
+        {
+            <p>@prod.Name - @prod.Description</p>
+        }
+    }
+</div>
+
+@code {
+    private List<Product> products = new List<Product>
+    {
+        new Product { Name = "Item 1", Description = "Description 1" },
+        new Product { Name = "Item 2", Description = "Description 2" },
+        new Product { Name = "Item 3", Description = "Description 3" },
+        new Product { Name = "Item 4", Description = "Description 4" },
+        new Product { Name = "Item 5", Description = "Description 5" }
+    };
+
+    private string searchTerm = string.Empty;
+
+    [Parameter]
+    public List<Product> FilteredProducts { get; set; }
+
+    private async Task OnSearchInput(string searchTerm)
+    {
+        Console.WriteLine("Parent_Component: OnSearchInput()");
+        this.searchTerm = searchTerm;
+        FilteredProducts = string.IsNullOrEmpty(searchTerm)
+            ? products
+            : products.Where(i => i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+        await InvokeAsync(StateHasChanged);
+    }
+}
