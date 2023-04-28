@@ -5,12 +5,12 @@ namespace IMS.Plugins.InMemory
 {
     public class InventoryRepository : IInventoryRepository
   {
-    private List<Inventory> _inventories;
+    private List<Inventory> inventories;
     public InventoryRepository()
     {
-      _inventories = new List<Inventory>()
+      inventories = new List<Inventory>()
       {
-          new Inventory() { InventoryId = 1, InventoryName = "Steering Wheel", Quantity = 10, Price = 30 },
+        new Inventory() { InventoryId = 1, InventoryName = "Steering Wheel", Quantity = 10, Price = 30 },
         new Inventory() { InventoryId = 2, InventoryName = "Brake Pad", Quantity = 20, Price = 15 }       ,
         new Inventory() { InventoryId = 3, InventoryName = "Air Filter", Quantity = 50, Price = 5 }       ,
         new Inventory() { InventoryId = 4, InventoryName = "Spark Plug", Quantity = 100, Price = 2 }      ,
@@ -39,31 +39,31 @@ namespace IMS.Plugins.InMemory
 
         public Task AddInventoryAsync(Inventory inventory)
         {
-           if (_inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+           if (inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
             {
                 return Task.CompletedTask;
             }
 
-            var maxId = _inventories.Max(x => x.InventoryId);
+            var maxId = inventories.Max(x => x.InventoryId);
             inventory.InventoryId = maxId + 1;
-            _inventories.Add(inventory);
+            inventories.Add(inventory);
             return Task.CompletedTask;
         }
 
     public async Task<bool> ExistsAsync(Inventory inventory)
     {
-      return await Task.FromResult(_inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)));
+      return await Task.FromResult(inventories.Any(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)));
     }
 
     public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name = "")
     {
-      if (string.IsNullOrWhiteSpace(name)) return await Task.FromResult(_inventories);
-      return _inventories.Where(x => x.InventoryName.Contains(name, StringComparison.OrdinalIgnoreCase));
+      if (string.IsNullOrWhiteSpace(name)) return await Task.FromResult(inventories);
+      return inventories.Where(x => x.InventoryName.Contains(name, StringComparison.OrdinalIgnoreCase));
     }
 
     public async Task<Inventory> GetInventoryByIdAsync(int inventoryId)
     {
-      var inv = _inventories.FirstOrDefault(x => x.InventoryId == inventoryId);
+      var inv = inventories.FirstOrDefault(x => x.InventoryId == inventoryId);
       var newInv = new Inventory
       {
         InventoryId = inventoryId,
@@ -77,10 +77,10 @@ namespace IMS.Plugins.InMemory
     public Task UpdateInventoryAsync(Inventory inventory)
     {
       //prevent duplicate inventory names
-      if (_inventories.Any(x => x.InventoryId != inventory.InventoryId && x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+      if (inventories.Any(x => x.InventoryId != inventory.InventoryId && x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
         return Task.CompletedTask;
 
-      var inv = _inventories.FirstOrDefault(x => x.InventoryId == inventory.InventoryId);
+      var inv = inventories.FirstOrDefault(x => x.InventoryId == inventory.InventoryId);
       if (inv != null)
       {
         inv.InventoryName = inventory.InventoryName;

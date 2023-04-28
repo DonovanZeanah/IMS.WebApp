@@ -15,8 +15,9 @@ namespace IMS.Plugins.InMemory
 
     }
     public DbSet<Inventory> Inventories { get; set; }
+        //public object Accessories { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<Inventory>().HasData(
         new Inventory() { InventoryId = 1, InventoryName = "Power Pole", Quantity = 10, Price = 30 },

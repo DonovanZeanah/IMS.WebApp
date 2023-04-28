@@ -1,0 +1,79 @@
+﻿<h3>Mercedes Search Bar</h3>
+
+@using IMS.CoreBusiness.Models;
+@namespace IMS.WebApp.Pages
+
+<div>
+    <input type="text" class="form-control" placeholder="Search for..."
+           @bind-value="@SearchTerm" @bind-value:event="oninput" @onkeyup="OnSearchInput" />
+</div>
+
+@SearchTerm @*(for testing) putting filter directly into the view*@
+
+@*<div>
+    Search:
+    <input type="text" @bind-value="_filter" @oninput="HandleSearch" />
+    <button @onclick="HandleClick">Search</button>
+</div>
+<br/>
+@_filter (for testing) putting filter directly into the view
+
+*@
+
+
+@code {
+    [Parameter]
+    public string SearchTerm { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSearch { get; set; }
+
+    private async Task OnSearchInput(KeyboardEventArgs e)
+    {
+        Console.WriteLine("SearchBar_Component: OnSearchInput()");
+        Console.WriteLine($"Search term entered: {SearchTerm}");
+
+        await OnSearch.InvokeAsync(SearchTerm);
+    }
+    //// Inputbox data
+    //private string _filter;
+
+    //// Event handler
+
+    //private void HandleSearch(ChangeEventArgs args)
+    //{
+    //    _filter = args.Value.ToString();
+    //    Console.WriteLine("SearchBar_Component.HandleSearch");
+    //}
+    //private void HandleClick()
+    //{
+    //    Console.WriteLine("Button clicked");
+    //}
+}
+
+
+@*<h3>Search Bar</h3>
+
+<div>
+    Search:
+    <input type="text" @bind-value="_filter" />
+    <button @onclick="HandleSearch">Search</button>
+</div>
+
+<br />
+@*(for testing) putting filter directly into the view*@
+@* 
+    @_filter
+*@
+
+@*@code {
+    // Inputbox data
+    private string _filter;
+
+    // Event handler
+
+    private void HandleSearch()
+    {
+        Console.WriteLine("SearchBar_Component.HandleSearch");
+    }
+}*@

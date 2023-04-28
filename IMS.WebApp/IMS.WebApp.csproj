@@ -1,25 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+	<TargetFramework>net6.0</TargetFramework>
+	<Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<UserSecretsId>3fe17894-0245-452c-b4e2-0c3ad0da3e40</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16" />
+	<PackageReference Include="Dapper" Version="2.0.123" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.3" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.16" />
+	<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+	<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IMS.CoreBusiness\IMS.CoreBusiness.csproj" />
-    <ProjectReference Include="..\IMS.plugins.DataStore.HardCoded\IMS.plugins.DataStore.HardCoded.csproj" />
-    <ProjectReference Include="..\IMS.Plugins.EFCore\IMS.Plugins.EFCore.csproj" />
-    <ProjectReference Include="..\IMS.Plugins.InMemory\IMS.Plugins.InMemory.csproj" />
-    <ProjectReference Include="..\IMS.UseCases\IMS.UseCases.csproj" />
+	<ProjectReference Include="..\IMS.CoreBusiness\IMS.CoreBusiness.csproj" />
+	<ProjectReference Include="..\IMS.plugins.DataStore.HardCoded\IMS.plugins.DataStore.HardCoded.csproj" />
+	<ProjectReference Include="..\IMS.Plugins.EFCore\IMS.Plugins.EFCore.csproj" />
+	<ProjectReference Include="..\IMS.Plugins.InMemory\IMS.Plugins.InMemory.csproj" />
+	<ProjectReference Include="..\IMS.Plugins.SQLite\IMS.Plugins.SQLite.csproj" />
+	<ProjectReference Include="..\IMS.UseCases\IMS.UseCases.csproj" />
   </ItemGroup>
 
 </Project>
