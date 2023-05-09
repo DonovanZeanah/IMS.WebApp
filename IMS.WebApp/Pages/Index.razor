@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using IMS.UseCases.InventoryUseCases.Interfaces
 @using IMS.CoreBusiness.Models
 
 
@@ -18,7 +19,8 @@ Welcome to your new app.
         <TaskList></TaskList>
     </div>
     <div class="col-md-4">
-        <TaskList></TaskList>
+        <Counter></Counter>
+        @*<TaskList></TaskList>*@
     </div>
 </div>
 
@@ -42,11 +44,11 @@ Welcome to your new app.
 
   protected override async Task OnInitializedAsync()
   {
-    _inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync()).ToList();
+   // _inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync()).ToList();
 
-    var inventory = new Inventory { InventoryId = 1, InventoryName = "Tripod", Quantity = 11, Price = 150 };
+   // var inventory = new Inventory { InventoryId = 1, InventoryName = "Tripod", Quantity = 11, Price = 150 };
 
-    await EditInventoryUseCase.ExecuteAsync(inventory);
+   // await EditInventoryUseCase.ExecuteAsync(inventory);
   
     _inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync()).ToList();
     //_inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync("tripod")).ToList();

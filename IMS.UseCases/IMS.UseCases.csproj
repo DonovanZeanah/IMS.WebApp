@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,13 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ViewInventoriesScreen\PluginInterfaces\**" />
-    <EmbeddedResource Remove="ViewInventoriesScreen\PluginInterfaces\**" />
-    <None Remove="ViewInventoriesScreen\PluginInterfaces\**" />
+    <ProjectReference Include="..\IMS.CoreBusiness\IMS.CoreBusiness.csproj" />
+    <ProjectReference Include="..\IMS.Plugins.SQL\IMS.Plugins.SQL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IMS.CoreBusiness\IMS.CoreBusiness.csproj" />
+    <Folder Include="ContactsUseCases\interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

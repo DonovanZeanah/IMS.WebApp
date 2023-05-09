@@ -1,0 +1,16 @@
+﻿@page "/products"
+
+<Parent_Product_Component></Parent_Product_Component>
+@*@inject NavigationManager NavigationManager
+@inject ISearchProduct searchProduct
+
+<h3>SearchProducts</h3>
+
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var products = searchProduct.Execute();
+    }
+}
+*@

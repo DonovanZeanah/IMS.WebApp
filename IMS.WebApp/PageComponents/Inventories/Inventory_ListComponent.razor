@@ -1,0 +1,47 @@
+﻿@using IMS.CoreBusiness.Models
+@using IMS.UseCases.InventoryUseCases.Interfaces
+
+@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+
+<table class="table">
+    <thead>
+    <tr>
+        @*<th>Inventory Name</th>
+            <th>Inventory Quantity</th>
+            <th>Inventory Price</th>
+            <th> </th>
+            <th>Inventory Category</th>
+            <th>Inventory Location</th>
+            <th>Inventory Date</th>
+            <th>Inventory Status</th>
+            <th>Inventory Image</th>
+            <th>Inventory Action</th>*@
+    </tr>
+    </thead>
+    <tbody>
+
+    @* this Maps listInventories() method to 'Inventories' field(List<Inventory> Inventories)
+        of InventoryListItemComponent.razor *@
+
+    <Inventory_ListItemComponent Inventories="listInventories"></Inventory_ListItemComponent>
+
+    </tbody>
+</table>
+
+@*//===;x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=x=[]=x=x=x=x=x=x=x=x=x=x=x=x=xx=x=x=x=x=x=x=x=[]x=[]*@
+
+@code {
+
+    private List<Inventory> listInventories = new List<Inventory>();
+
+    [Parameter]
+    // Add a new parameter named SearchTerm to the
+    // InventoryListComponent tag in the SearchInventoryComponent
+
+    public String SearchTerm { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        listInventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(this.SearchTerm)).ToList();
+    }
+}

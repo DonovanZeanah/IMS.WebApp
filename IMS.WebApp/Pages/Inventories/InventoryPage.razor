@@ -1,0 +1,49 @@
+﻿@page "/inventory"
+@using IMS.WebApp.PageComponents.Parents
+@using Microsoft.AspNetCore.Components
+
+@using IMS.Plugins.SQLite
+@using IMS.CoreBusiness.Models
+
+@inject NavigationManager NavigationManager
+
+<h3>Inventory</h3>
+<br/>
+
+<button type="button"
+        class="btn btn-primary"
+        @onclick="AddInventory">
+    Add Item
+</button>
+
+<Parent_Inventory_Component SearchTerm="@inventoryNameToSearch" OnSearchInventory="OnInventorySearch"></Parent_Inventory_Component>
+
+@*
+<InventoryPage>
+    -Button(Add Inventory)
+    <SearchInventoryComponent>
+        -InputBox
+        -Button(Search)
+        -<InventoryListComponent> 
+                        -<InventoryListItemComponent>
+text on main page passes to SIC -> ILC -> ILIC*@
+@*<InventoryListComponent SearchTerm="@searchTerm"></InventoryListComponent> Search Term: @searchTerm*@
+@*<InventoryListItemComponent></InventoryListItemComponent>*@
+
+
+@code {
+    private string searchTerm = string.Empty;
+    private string inventoryNameToSearch = string.Empty;
+
+
+    private void OnInventorySearch(string searchTerm)
+    {
+        this.searchTerm = searchTerm;
+    }
+
+    private void AddInventory()
+    {
+        NavigationManager.NavigateTo("/addinventory");
+    }
+
+}
