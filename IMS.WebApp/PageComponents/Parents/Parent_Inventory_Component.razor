@@ -1,4 +1,5 @@
-﻿@* no page directive, no page title *@
+﻿@using IMS.WebApp.PageComponents.Inventories
+@* no page directive, no page title *@
 
 
 
@@ -22,7 +23,7 @@
 <br />
 
 
-<InventoryListComponent SearchTerm="@inventoryNameToSearch"></InventoryListComponent>
+<Inventory_ListComponent SearchTerm="@inventoryNameToSearch"></Inventory_ListComponent>
 
 @*added SearchTerm="@inventoryNameToSearch"*@
 
@@ -34,7 +35,7 @@
     private string inventoryNameToSearch = string.Empty;
 
     [Parameter]
-    public string SearchTerm { get; set; }
+    public string? SearchTerm { get; set; }
 
     [Parameter]
     public EventCallback<string> OnSearchInventory { get; set; }

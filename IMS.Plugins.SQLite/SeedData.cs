@@ -1,5 +1,7 @@
 ﻿using IMS.CoreBusiness.Models;
-using IMS.Plugins.InMemory;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IMS.Plugins.SQLite
 {
@@ -155,7 +157,29 @@ namespace IMS.Plugins.SQLite
                     Version = 00.00,
             },
             };
+
+            // Accessories
             foreach (var accessory in accessories)
+            {
+                var existingAccessory = db.Accessories.Find(accessory.Name);
+                if (existingAccessory != null)
+                {
+                    if (AreAccessoriesDifferent(existingAccessory, accessory))
+                    {
+                        Console.WriteLine($"Updating Accessory with Id {accessory.Name}...{accessory.Version}...{accessory.Type}");
+                        db.Entry(existingAccessory).CurrentValues.SetValues(accessory);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"adding Accessory with Id {accessory.Name}...{accessory.Version}...{accessory.Type}");
+                    db.Accessories.Add(accessory);
+                }
+            }
+            db.SaveChangesAsync();
+
+
+            /*foreach (var accessory in accessories)
             {
                 var existingAccessory = db.Accessories.Find(accessory.Name);
                 if (existingAccessory != null)
@@ -175,7 +199,7 @@ namespace IMS.Plugins.SQLite
                     db.Accessories.Add(accessory);
                 }
             }
-            db.SaveChangesAsync();
+            db.SaveChangesAsync();*/
 
 
 
@@ -334,5 +358,11 @@ namespace IMS.Plugins.SQLite
             return !existingSource.Id.Equals(sourceToSeed.Id);
         }
 
+        private static bool AreAccessoriesDifferent(Accessory existingAccessory, Accessory accessoryToSeed)
+        {
+            return existingAccessory.Name != accessoryToSeed.Name ||
+                   existingAccessory.Type != accessoryToSeed.Type ||
+                   existingAccessory.Version != accessoryToSeed.Version;
+        }
     }
 }

@@ -14,7 +14,7 @@ using IMS.UseCases.SearchProductScreen.interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using InventoryRepository = IMS.Plugins.InMemory.InventoryRepository;
+using InMemoryInventoryRepository = IMS.Plugins.InMemory.InMemoryInventoryRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +25,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 //builder.Services.AddDbContext<IMSSQLiteDbContext>(options => options.UseSqlite("Data Source=ims.db"));
-//builder.Services.AddDbContext<IMSSQLiteDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteConnection")));
+builder.Services.AddDbContext<IMSSQLiteDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteConnection")));
 
 
 
@@ -49,11 +49,11 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IMSSQLiteDbContext>(provider =>
 {
     var options = new DbContextOptionsBuilder<IMSSQLiteDbContext>()
-        .UseSqlite("Data Source=IMS.db")
+        .UseSqlite("Data Source=IMS_Program.db")
         .Options;
 
     var context = new IMSSQLiteDbContext(options);
-    context.Database.Migrate(); // Add this line to apply any pending migrations
+   // context.Database.Migrate(); // Add this line to apply any pending migrations
     context.Database.EnsureCreated(); // Add this line to create the database if it doesn't exist
     return context;
 });
@@ -78,7 +78,9 @@ builder.Services.AddTransient<ISearchProduct, SearchProduct>();
 builder.Services.AddTransient<IViewProduct, ViewProduct>();
 
 //=========================================================================================== 
-builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
+//builder.Services.AddSingleton<IInventoryRepository, InMemoryInventoryRepository>();
+builder.Services.AddScoped<IInventoryRepository, SqliteInventoryRepository>();
+
 
 builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
 builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
@@ -98,6 +100,8 @@ using (var scope = app.Services.CreateScope())
     context.Database.EnsureCreated(); // Add this line to create the database if it doesn't exist
     SeedData.Initialize(context);
 }
+
+
 //using var scope = app.Services.CreateScope();
 //var dbContext = scope.ServiceProvider.GetRequiredService<IMSSQLiteDbContext>();
 
@@ -173,13 +177,13 @@ if (!app.Environment.IsDevelopment())
     app.MapBlazorHub();
 
     app.MapFallbackToPage("/_Host");
-    using (var imsscope = app.Services.CreateScope())
-    {
-        var imsDbContext = imsscope.ServiceProvider.GetRequiredService<IMSSQLiteDbContext>();
+//using (var imsscope = app.Services.CreateScope())
+//{
+//    var imsDbContext = imsscope.ServiceProvider.GetRequiredService<IMSSQLiteDbContext>();
 
-        // Apply any pending migrations
-        imsDbContext.Database.Migrate();
-    }
+//    // Apply any pending migrations
+//    imsDbContext.Database.Migrate();
+//}
 
-    app.Run();
+app.Run();
 
