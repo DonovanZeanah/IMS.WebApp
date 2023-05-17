@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using IMS.CoreBusiness.Models;
+using IMS.Plugins.SQLite.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace IMS.Plugins.SQLite
+namespace IMS.Plugins.SQLite.Repository
 {
     public class SQLiteRepository<T> : ISQLiteRepository<T> where T : class
     {

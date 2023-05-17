@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace IMS.Plugins.SQLite
+namespace IMS.Plugins.SQLite.Identity
 {
     public class IMSUser : IdentityUser, IEquatable<IMSUser>
     {

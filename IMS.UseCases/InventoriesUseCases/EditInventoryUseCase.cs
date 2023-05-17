@@ -10,8 +10,8 @@ namespace IMS.UseCases.InventoryUseCases
 {
     public class EditInventoryUseCase : IEditInventoryUseCase
     {
-        private readonly IInventoryRepository _inventoryRepository;
-        public EditInventoryUseCase(IInventoryRepository inventoryRepository)
+        private readonly ISQLiteInventoryRepository _inventoryRepository;
+        public EditInventoryUseCase(ISQLiteInventoryRepository inventoryRepository)
         {
             _inventoryRepository = inventoryRepository;
         }

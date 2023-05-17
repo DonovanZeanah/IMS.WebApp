@@ -1,59 +1,94 @@
 ﻿@page "/addInventory"
-@using IMS.Plugins.SQLite
-@using Microsoft.AspNetCore.Components
-@using IMS.CoreBusiness.Models
-@using IMS.UseCases.InventoryUseCases.Interfaces;
 
+@using IMS.Plugins.SQLite;
+@using IMS.UseCases.InventoryUseCases;
+@using Microsoft.AspNetCore.Components;
+@using IMS.CoreBusiness.Models;
+@using IMS.UseCases.InventoryUseCases.Interfaces;
 
 @inject IAddInventoryUseCase AddInventoryUseCase
 @inject NavigationManager NavigationManager
 
 <h3>Add Inventory</h3>
-<br/>
+<br />
+
 <EditForm Model="inventory" OnValidSubmit="SaveInventory">
-    <DataAnnotationsValidator>  </DataAnnotationsValidator>
-    <ValidationSummary> </ValidationSummary>
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
 
     <div class="form-group">
         <label for="name">Inventory Name</label>
-        <InputText 
-            id="name" 
-            @bind-Value="inventory.InventoryName"
-            class="form-control">
-        </InputText>
+        <InputText id="name" @bind-Value="inventory.InventoryName" class="form-control"></InputText>
     </div>
 
     <div class="form-group">
         <label for="quantity">Quantity</label>
-        <InputNumber id="quantity"
-                     @bind-Value="inventory.Quantity"
-                     class="form-control">
-        </InputNumber>
+        <InputNumber id="quantity" @bind-Value="inventory.Quantity" class="form-control"></InputNumber>
     </div>
 
     <div class="form-group">
         <label for="price">Price</label>
-        <InputNumber id="price"
-                     @bind-Value="inventory.Price"
-                     class="form-control">
-        </InputNumber>
+        <InputNumber id="price" @bind-Value="inventory.Price" class="form-control"></InputNumber>
     </div>
-    <br/>
+
+    <div class="form-group">
+        <label for="source">Source</label>
+        <InputSelect id="source" @bind-Value="selectedDiscriminator" class="form-control">
+            @foreach (SourceDiscriminator discriminator in Enum.GetValues(typeof(SourceDiscriminator)))
+            {
+                <option value="@discriminator">@discriminator</option>
+            }
+        </InputSelect>
+    </div>
+
+    <br />
     <button type="submit" class="btn btn-primary">Save</button>
     <button type="button" class="btn btn-primary" @onclick="Cancel">Cancel</button>
-
 </EditForm>
 
-@code {
+@code
+{
+    private SourceDiscriminator selectedDiscriminator;
+
     private Inventory inventory = new Inventory();
+
+    public IEnumerable<Source> Sources { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Sources = await AddInventoryUseCase.GetAllSourcesAsync();
+    }
 
     private async Task SaveInventory()
     {
+        inventory.InventorySources = Sources.Select(source => new InventorySource { SourceId = source.Id }).ToList();
+        foreach (var prop in inventory.GetType().GetProperties())
+        {
+            Console.WriteLine($"{prop.Name}: {prop.GetValue(inventory)}");
+        }
+
+        foreach (var source in inventory.InventorySources)
+        {
+            Console.WriteLine($"SourceId: {source.SourceId}");
+        }
+
+        foreach (var source in inventory.InventorySources)
+        {
+            Console.WriteLine($"SourceId: {source.SourceId}");
+        }
         await AddInventoryUseCase.ExecuteAsync(inventory);
         NavigationManager.NavigateTo("/inventories");
     }
+
     private void Cancel()
     {
         NavigationManager.NavigateTo("/inventories");
     }
 }
+
+
+    
+
+
+
+

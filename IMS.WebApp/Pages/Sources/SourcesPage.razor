@@ -1,8 +1,60 @@
 ﻿@page "/sources"
-@using IMS.Plugins.SQLite 
-@using IMS.CoreBusiness.Models 
-@using IMS.WebApp.PageComponents.Parents
-@using Microsoft.EntityFrameworkCore
+@using IMS.Plugins.SQLite;
+@using IMS.CoreBusiness.Models;
+@using IMS.Plugins.SQLite.Data;
+@using IMS.WebApp.PageComponents.Parents;
+@using Microsoft.EntityFrameworkCore;
+
+@inject NavigationManager NavigationManager;
+@inject IMSSQLiteDbContext DbContext;
+
+<h1>Sources</h1>
+
+@if (sources == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul>
+        @foreach (var source in sources)
+        {
+            <li>
+                Id: @source.Id, Name: @source.Name @*Discriminator: @source.Discriminator*@
+                <br />
+                Inventories:
+                <ul>
+                    @foreach (var inventory in source.InventorySources)
+                    {
+                        <li>
+                            Id: @inventory.Id, InventoryId: @inventory.InventoryId, InventoryName: @inventory.InventoryName, Quantity: @inventory.Quantity, Price: @inventory.Price
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    private List<Source> sources;
+
+    protected override async Task OnInitializedAsync()
+    {
+        sources = await DbContext.Set<Source>()
+            .Include(s => s.InventorySources)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+}
+
+
+@*@page "/sources"
+@using IMS.Plugins.SQLite;
+@using IMS.CoreBusiness.Models;
+@using IMS.Plugins.SQLite.Data;
+@using IMS.WebApp.PageComponents.Parents;
+@using Microsoft.EntityFrameworkCore;
 
 @inject NavigationManager NavigationManager;
 @inject IMSSQLiteDbContext DbContext;
@@ -45,4 +97,4 @@ else
             .AsNoTracking()
             .ToListAsync();
     }
-}
+}*@

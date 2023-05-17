@@ -3,7 +3,7 @@ using IMS.UseCases.InventoryUseCases.Interfaces;
 
 namespace IMS.Plugins.InMemory
 {
-    public class InMemoryInventoryRepository : IInventoryRepository
+    public class InMemoryInventoryRepository : ISQLiteInventoryRepository
     {
         private List<Inventory> inventories;
         public InMemoryInventoryRepository()

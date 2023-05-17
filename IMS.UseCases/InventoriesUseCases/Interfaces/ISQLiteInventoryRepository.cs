@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IMS.UseCases.InventoryUseCases.Interfaces
 {
-    public interface IInventoryRepository
+    public interface ISQLiteInventoryRepository
     {
         Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name = "");
         Task<bool> ExistsAsync(Inventory inventory);

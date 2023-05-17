@@ -6,17 +6,28 @@ using System.Threading.Tasks;
 
 namespace IMS.CoreBusiness.Models
 {
+    public enum SourceDiscriminator
+    {
+        LocationSource,
+        StoreSource,
+        ContactSource,
+        SelfObtainedSource
+    }
     public abstract class Source
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public virtual ICollection<Inventory>? Inventories { get; set; }
+      //  public int DiscriminatorId { get; set; }
+      //  public SourceDiscriminator? DiscriminatorId { get; set; }
+
+        public virtual ICollection<Inventory>? InventorySources { get; set; }
 
         // Add other common properties if needed
     }
     public class LocationSource : Source
     {
         public string? Address { get; set; }
+        //public string? 
         // Add other location-specific properties
     }
 

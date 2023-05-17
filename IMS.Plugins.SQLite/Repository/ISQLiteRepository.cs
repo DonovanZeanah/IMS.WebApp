@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace IMS.Plugins.SQLite
+namespace IMS.Plugins.SQLite.Repository
 {
     public interface ISQLiteRepository<T>
     {
