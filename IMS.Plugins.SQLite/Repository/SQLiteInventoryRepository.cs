@@ -23,8 +23,8 @@ namespace IMS.Plugins.SQLite
             var lowerCaseInventoryName = inventory.InventoryName.ToLowerInvariant();
 
             var existingInventory =  _context.Inventories
-    .AsEnumerable()
-    .FirstOrDefault(i => i.InventoryName.ToLowerInvariant() == lowerCaseInventoryName);
+     .AsEnumerable()
+     .FirstOrDefault(i => i.InventoryName.ToLowerInvariant() == lowerCaseInventoryName);
 
             if (existingInventory == null)
             {
@@ -37,26 +37,15 @@ namespace IMS.Plugins.SQLite
             }
         }
 
-
         public async Task<bool> ExistsAsync(Inventory inventory)
         {
             if (inventory == null)
                 throw new ArgumentNullException(nameof(inventory));
-            return await _context.Inventories.AnyAsync(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase));
+
+            return await _context.Inventories.AnyAsync(x =>
+                x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase));
         }
 
-        //public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name = "")
-        //{
-        //    if (string.IsNullOrWhiteSpace(name))
-        //    {
-        //        return await _context.Inventories.ToListAsync();
-        //    }
-
-        //    return await _context.Inventories
-        //        .Include(i => i.InventorySources)
-        //        .Where(x => EF.Functions.Like(x.InventoryName, $"%{name}%"))
-        //        .ToListAsync();
-        //}
         public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name = "")
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -78,26 +67,133 @@ namespace IMS.Plugins.SQLite
 
         public async Task UpdateInventoryAsync(Inventory inventory)
         {
-            //if (inventory == null)
-            //    throw new ArgumentNullException(nameof(inventory));
+            if (inventory == null)
+                throw new ArgumentNullException(nameof(inventory));
 
-            //if (await _context.Inventories.AnyAsync(x => x.InventoryId != inventory.InventoryId && x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
-            //{
-            //    throw new InvalidOperationException("Inventory with the same name already exists.");
-            //}
+            var existingInventory = await _context.Inventories
+                .FirstOrDefaultAsync(i => i.InventoryId != inventory.InventoryId &&
+                                          i.InventoryName.ToLowerInvariant() == inventory.InventoryName.ToLowerInvariant());
 
-            var inv = await _context.Inventories.FindAsync(inventory.Id);
-            if (inv != null)
+            if (existingInventory == null)
             {
-                inv.InventoryName = inventory.InventoryName;
-                inv.Price = inventory.Price;
-                inv.Quantity = inventory.Quantity;
-                await _context.SaveChangesAsync();
+                var inv = await _context.Inventories.FindAsync(inventory.Id);
+                if (inv != null)
+                {
+                    inv.InventoryName = inventory.InventoryName;
+                    inv.Price = inventory.Price;
+                    inv.Quantity = inventory.Quantity;
+                    await _context.SaveChangesAsync();
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("Inventory with the same name already exists.");
             }
         }
     }
 }
 
+
+//using IMS.CoreBusiness.Models;
+//using IMS.Plugins.SQLite.Data;
+//using IMS.UseCases.InventoryUseCases.Interfaces;
+//using Microsoft.EntityFrameworkCore;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Threading.Tasks;
+
+//namespace IMS.Plugins.SQLite
+//{
+//    public class SqliteInventoryRepository : ISQLiteInventoryRepository
+//    {
+//        private readonly IMSSQLiteDbContext _context;
+
+//        public SqliteInventoryRepository(IMSSQLiteDbContext context)
+//        {
+//            _context = context;
+//        }
+
+//        public async Task AddInventoryAsync(Inventory inventory)
+//        {
+//            var lowerCaseInventoryName = inventory.InventoryName.ToLowerInvariant();
+
+//            var existingInventory =  _context.Inventories
+//    .AsEnumerable()
+//    .FirstOrDefault(i => i.InventoryName.ToLowerInvariant() == lowerCaseInventoryName);
+
+//            if (existingInventory == null)
+//            {
+//                _context.Inventories.Add(inventory);
+//                await _context.SaveChangesAsync();
+//            }
+//            else
+//            {
+//                throw new InvalidOperationException("Inventory with the same name already exists.");
+//            }
+//        }
+
+
+//        public async Task<bool> ExistsAsync(Inventory inventory)
+//        {
+//            if (inventory == null)
+//                throw new ArgumentNullException(nameof(inventory));
+//            return await _context.Inventories.AnyAsync(x => x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase));
+//        }
+
+//        //public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name = "")
+//        //{
+//        //    if (string.IsNullOrWhiteSpace(name))
+//        //    {
+//        //        return await _context.Inventories.ToListAsync();
+//        //    }
+
+//        //    return await _context.Inventories
+//        //        .Include(i => i.InventorySources)
+//        //        .Where(x => EF.Functions.Like(x.InventoryName, $"%{name}%"))
+//        //        .ToListAsync();
+//        //}
+//        public async Task<IEnumerable<Inventory>> GetInventoriesByNameAsync(string name = "")
+//        {
+//            if (string.IsNullOrWhiteSpace(name))
+//            {
+//                return await _context.Inventories.ToListAsync();
+//            }
+
+//            return await _context.Inventories
+//                .Where(x => x.InventoryName.ToLower().Contains(name.ToLower()))
+//                .ToListAsync();
+//        }
+
+//        public async Task<Inventory> GetInventoryByIdAsync(int inventoryId)
+//        {
+//            return await _context.Inventories
+//                .Include(i => i.InventorySources)
+//                .FirstOrDefaultAsync(i => i.InventoryId == inventoryId);
+//        }
+
+//        public async Task UpdateInventoryAsync(Inventory inventory)
+//        {
+//            //if (inventory == null)
+//            //    throw new ArgumentNullException(nameof(inventory));
+
+//            //if (await _context.Inventories.AnyAsync(x => x.InventoryId != inventory.InventoryId && x.InventoryName.Equals(inventory.InventoryName, StringComparison.OrdinalIgnoreCase)))
+//            //{
+//            //    throw new InvalidOperationException("Inventory with the same name already exists.");
+//            //}
+
+//            var inv = await _context.Inventories.FindAsync(inventory.Id);
+//            if (inv != null)
+//            {
+//                inv.InventoryName = inventory.InventoryName;
+//                inv.Price = inventory.Price;
+//                inv.Quantity = inventory.Quantity;
+//                await _context.SaveChangesAsync();
+//            }
+//        }
+//    }
+//}
+//; []==============================[] =================================[]
 
 //using IMS.CoreBusiness.Models;
 //using IMS.Plugins.SQLite.Data;
