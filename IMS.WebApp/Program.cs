@@ -1,8 +1,9 @@
+using BlazorSignalRChartApp.Models;
 using IMS.plugins.DataStore.HardCoded;
+using IMS.Plugins.InMemory;
 using IMS.Plugins.SQLite;
 using IMS.Plugins.SQLite.Data;
 using IMS.UseCases._PluginInterfaces_.DataStore;
-using IMS.UseCases.ContactsUseCases;
 using IMS.UseCases.InventoriesUseCases.Interfaces;
 using IMS.UseCases.InventoryUseCases;
 using IMS.UseCases.InventoryUseCases.Interfaces;
@@ -12,208 +13,225 @@ using IMS.UseCases.PluginInterfaces.DataStore;
 using IMS.UseCases.SearchProductScreen;
 using IMS.UseCases.SearchProductScreen.interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-internal class Program
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container. //EF
+
+/*var connectionString = builder.Configuration.GetConnectionString("IdentityDbConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));*/
+
+// Add Contact Web DB Connection
+//var mcmdContext = builder.Configuration.GetConnectionString("SQLConnection");
+var connectionString = builder.Configuration.GetConnectionString("SQLConnection");
+
+
+
+builder.Services.AddScoped(provider =>
 {
-    private static void Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
+    var dbContextFactory = provider.GetRequiredService<IDbContextFactory<T4Context>>();
+    return dbContextFactory.CreateDbContext();
+});
+//builder.Services.AddDbContext<T4Context>(options =>
+  //  options.UseSqlServer(connectionString));
 
-        // Add services to the container. //EF
 
-        //builder.Services.AddDbContext<IMSSQLiteDbContext>(options =>
-        //options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteDatabase")));
+//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddRoles<IdentityRole>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 
 
-        //builder.Services.AddDbContext<IMSSQLiteDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteConnection")));
 
+//builder.Services.AddDbContext<IMSSQLiteDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteConnection")));
 
 
 
 
-        builder.Services.AddRazorPages();
-        builder.Services.AddServerSideBlazor();
 
-        //builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
 
-        //builder.Services.AddDbContext<IMSContext>(options =>)
+//builder.Services.AddSingleton<WeatherForecastService>();
 
-        builder.Services.AddScoped(provider =>
-        {
-            var options = new DbContextOptionsBuilder<IMSSQLiteDbContext>()
-                .UseSqlite("Data Source=IMS2.db")
-                .Options;
+//builder.Services.AddDbContext<IMSContext>(options =>)
 
-            var context = new IMSSQLiteDbContext(options);
-            // context.Database.Migrate(); // Add this line to apply any pending migrations
-            context.Database.EnsureCreated(); // Add this line to create the database if it doesn't exist
-            return context;
-        });
+builder.Services.AddScoped(provider =>
+{
+    var options = new DbContextOptionsBuilder<IMSSQLiteDbContext>()
+        .UseSqlite("Data Source=IMS2.db")
+        .Options;
 
-        // =========================   \\interfaces and their \\implementation
-        builder.Services.AddTransient<IContactRepository, ContactRepository>();
-        builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+    var context = new IMSSQLiteDbContext(options);
+    // context.Database.Migrate(); // Add this line to apply any pending migrations
+    context.Database.EnsureCreated(); // Add this line to create the database if it doesn't exist
+    return context;
+});
 
 
-        //=========================================================================================== 
-        builder.Services.AddTransient<IMercedesRepository, MercedesRepository>();
+// =========================   \\interfaces and their \\implementation
+//builder.Services.AddTransient<IContactRepository, ContactRepository>();
+//builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-        builder.Services.AddTransient<ISearchMercede, SearchMercede>();
-        builder.Services.AddTransient<IViewMercede, ViewMercede>();
 
+//=========================================================================================== 
+builder.Services.AddTransient<IMercedesRepository, MercedesRepository>();
 
+builder.Services.AddTransient<ISearchMercede, SearchMercede>();
+builder.Services.AddTransient<IViewMercede, ViewMercede>();
 
-        //=========================================================================================== 
-        builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
-        builder.Services.AddTransient<ISearchProduct, SearchProduct>();
-        builder.Services.AddTransient<IViewProduct, ViewProduct>();
 
-        //=========================================================================================== 
-        //builder.Services.AddSingleton<IInventoryRepository, InMemoryInventoryRepository>();
-        builder.Services.AddScoped<ISQLiteInventoryRepository, SqliteInventoryRepository>();
-        builder.Services.AddScoped<ISQLiteBaseSourceRepository, SQLiteBaseSourceRepository>();
+//=========================================================================================== 
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
+builder.Services.AddTransient<ISearchProduct, SearchProduct>();
+builder.Services.AddTransient<IViewProduct, ViewProduct>();
 
+//=========================================================================================== 
+//builder.Services.AddSingleton<IInventoryRepository, InMemoryInventoryRepository>();
+//builder.Services.AddScoped<ISQLiteInventoryRepository, SqliteInventoryRepository>();
+builder.Services.AddScoped<ISQLiteInventoryRepository, InMemoryInventoryRepository>();
 
-        builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
-        builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
-        builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
-        builder.Services.AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>();
-        //=========================================================================================== 
-        builder.Services.AddLogging(loggingBuilder =>
-        {
-            loggingBuilder.AddConsole(); // Add the console logger
-        });
+builder.Services.AddScoped<ISQLiteBaseSourceRepository, SQLiteBaseSourceRepository>();
 
 
-        var app = builder.Build();
 
-        // Seed the data
+builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
+builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
+builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
+builder.Services.AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>();
+//=========================================================================================== 
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddConsole(); // Add the console logger
+});
 
 
+var app = builder.Build();
 
+// Seed the data
 
-        // Log the registered services
 
-        // Other operations
 
 
-        //using (var scope = app.Services.CreateScope())
-        //{
-        //    var services1 = new ServiceCollection();
+// Log the registered services
 
-        //    // Register services
+// Other operations
 
-        //    // ...
 
-        //    var serviceProvider = services1.BuildServiceProvider();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services1 = new ServiceCollection();
 
-        //    // Get an instance of ILogger
-        //    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+//    // Register services
 
-        //    // Log the registered services
-        //    foreach (var service in services1)
-        //    {
-        //        logger.LogInformation($"Registered service: {service.ServiceType} - {service.ImplementationType}");
-        //    }
+//    // ...
 
-        //    var services = scope.ServiceProvider;
-        //    var context = services.GetRequiredService<IMSSQLiteDbContext>();
-        //    context.Database.EnsureCreated(); // Add this line to create the database if it doesn't exist
-        //    SeedData.Initialize(context);
-        //}
+//    var serviceProvider = services1.BuildServiceProvider();
 
+//    // Get an instance of ILogger
+//    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 
-        //using var scope = app.Services.CreateScope();
-        //var dbContext = scope.ServiceProvider.GetRequiredService<IMSSQLiteDbContext>();
+//    // Log the registered services
+//    foreach (var service in services1)
+//    {
+//        logger.LogInformation($"Registered service: {service.ServiceType} - {service.ImplementationType}");
+//    }
 
-        //// Query the sources and their related inventories
-        //var sources = dbContext.Sources
-        //    .Include(s => s.Inventories)
-        //    .AsNoTracking()
-        //    .ToList();
+//    var services = scope.ServiceProvider;
+//    var context = services.GetRequiredService<IMSSQLiteDbContext>();
+//    context.Database.EnsureCreated(); // Add this line to create the database if it doesn't exist
+//    SeedData.Initialize(context);
+//}
 
-        //// Display the sources and their related inventories
-        //Console.WriteLine("Sources:");
-        //foreach (var source in sources)
-        //{
-        //    Console.WriteLine($"- Id: {source.Id}, Name: {source.Name}, Type: {source.GetType().Name}");
 
-        //    if (source.Inventories != null)
-        //    {
-        //        Console.WriteLine("  Inventories:");
-        //        foreach (var inventory in source.Inventories)
-        //        {
-        //            Console.WriteLine($"  - Id: {inventory.Id}, InventoryId: {inventory.InventoryId}, InventoryName: {inventory.InventoryName}, Quantity: {inventory.Quantity}, Price: {inventory.Price}");
-        //        }
-        //    }
+//using var scope = app.Services.CreateScope();
+//var dbContext = scope.ServiceProvider.GetRequiredService<IMSSQLiteDbContext>();
 
+//// Query the sources and their related inventories
+//var sources = dbContext.Sources
+//    .Include(s => s.Inventories)
+//    .AsNoTracking()
+//    .ToList();
 
+//// Display the sources and their related inventories
+//Console.WriteLine("Sources:");
+//foreach (var source in sources)
+//{
+//    Console.WriteLine($"- Id: {source.Id}, Name: {source.Name}, Type: {source.GetType().Name}");
 
+//    if (source.Inventories != null)
+//    {
+//        Console.WriteLine("  Inventories:");
+//        foreach (var inventory in source.Inventories)
+//        {
+//            Console.WriteLine($"  - Id: {inventory.Id}, InventoryId: {inventory.InventoryId}, InventoryName: {inventory.InventoryName}, Quantity: {inventory.Quantity}, Price: {inventory.Price}");
+//        }
+//    }
 
 
 
 
 
-        //// Add the code snippet here:
-        //using var scope = app.Services.CreateScope();
-        //var dbContext = scope.ServiceProvider.GetRequiredService<IMSSQLiteDbContext>();
 
-        //// Query the sources and their related inventories
-        //var sources = dbContext.Set<Source>()
-        //    .Include(s => s.Inventories)
-        //    .AsNoTracking()
-        //    .ToList();
 
-        //// Display the sources and their related inventories
-        //Console.WriteLine("Sources:");
-        //foreach (var source in sources)
-        //{
-        //    Console.WriteLine($"- Id: {source.Id}, Name: {source.Name}, Type: {source.GetType().Name}");
 
-        //    if (source.Inventories != null)
-        //    {
-        //        Console.WriteLine("  Inventories:");
-        //        foreach (var inventory in source.Inventories)
-        //        {
-        //            Console.WriteLine($"  - Id: {inventory.Id}, InventoryId: {inventory.InventoryId}, InventoryName: {inventory.InventoryName}, Quantity: {inventory.Quantity}, Price: {inventory.Price}");
-        //        }
-        //    }
-        //}
-        //// End of the code snippet
+//// Add the code snippet here:
+//using var scope = app.Services.CreateScope();
+//var dbContext = scope.ServiceProvider.GetRequiredService<IMSSQLiteDbContext>();
 
-        // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
-        {
-            app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
+//// Query the sources and their related inventories
+//var sources = dbContext.Set<Source>()
+//    .Include(s => s.Inventories)
+//    .AsNoTracking()
+//    .ToList();
 
-        app.UseHttpsRedirection();
+//// Display the sources and their related inventories
+//Console.WriteLine("Sources:");
+//foreach (var source in sources)
+//{
+//    Console.WriteLine($"- Id: {source.Id}, Name: {source.Name}, Type: {source.GetType().Name}");
 
-        app.UseStaticFiles();
+//    if (source.Inventories != null)
+//    {
+//        Console.WriteLine("  Inventories:");
+//        foreach (var inventory in source.Inventories)
+//        {
+//            Console.WriteLine($"  - Id: {inventory.Id}, InventoryId: {inventory.InventoryId}, InventoryName: {inventory.InventoryName}, Quantity: {inventory.Quantity}, Price: {inventory.Price}");
+//        }
+//    }
+//}
+//// End of the code snippet
 
-        app.UseRouting();
-
-        app.MapBlazorHub();
-
-        app.MapFallbackToPage("/_Host");
-
-        //using (var imsscope = app.Services.CreateScope())
-        //{
-        //    var imsDbContext = imsscope.ServiceProvider.GetRequiredService<IMSSQLiteDbContext>();
-
-        //    // Apply any pending migrations
-        //    imsDbContext.Database.Migrate();
-        //}
-
-        app.Run();
-    }
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
+
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapBlazorHub();
+
+app.MapFallbackToPage("/_Host");
+
+//using (var imsscope = app.Services.CreateScope())
+//{
+//    var imsDbContext = imsscope.ServiceProvider.GetRequiredService<IMSSQLiteDbContext>();
+
+//    // Apply any pending migrations
+//    imsDbContext.Database.Migrate();
+//}
+
+app.Run();

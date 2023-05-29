@@ -1,0 +1,43 @@
+﻿@page "/tests"
+@using IMS.CoreBusiness.Models;
+@inject IMockCarService CarService
+
+<h3>Car Table</h3>
+
+@if (Cars == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in Cars)
+            {
+                <tr>
+                    <td>@car.Id</td>
+                    <td>@car.Make</td>
+                    <td>@car.Model</td>
+                    <td>@car.Year</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<MockCar> Cars;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cars = await CarService.GetAllCars();
+    }
+}

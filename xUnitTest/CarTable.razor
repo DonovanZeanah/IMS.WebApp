@@ -1,0 +1,47 @@
+@page "/carTable"
+@using xUnitTests
+@inject ICarService CarService
+
+<h3>Car Table</h3>
+
+@if (Cars == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Car ID</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Current Status</th>
+                <th>Owner ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in Cars)
+            {
+                <tr>
+                    <td>@car.CarID</td>
+                    <td>@car.Make</td>
+                    <td>@car.Model</td>
+                    <td>@car.Year</td>
+                    <td>@car.CurrentStatus</td>
+                    <td>@car.OwnerID</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    public List<Car> Cars;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cars = await CarService.GetCarsAsync();
+    }
+}

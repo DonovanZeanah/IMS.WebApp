@@ -15,6 +15,8 @@ namespace IMS.Plugins.EFCore
 
     }
     public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventDetail> EventDetails { get; set; }
         //public object Accessories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

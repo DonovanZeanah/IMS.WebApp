@@ -1,0 +1,79 @@
+﻿@using IMS.CoreBusiness.Models
+
+@page "/CarTable"
+
+
+@inject CarTableService CarTableService
+
+<h1>Index</h1>
+
+<p>
+    <a href="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Make
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                TeleGeneration
+            </th>
+            <th>
+                Miles
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                CurrentStatus
+            </th>
+            <th>
+                Source
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in CarTableService.CarTable)
+        {
+            <tr>
+                <td>
+                    @item.Make
+                </td>
+                <td>
+                    @item.Model
+                </td>
+                <td>
+                    @item.Year
+                </td>
+                <td>
+                    @item.TeleGeneration
+                </td>
+                <td>
+                    @item.Miles
+                </td>
+                <td>
+                    @item.Location
+                </td>
+                <td>
+                    @item.CurrentStatus.StatusId
+                </td>
+                <td>
+                    @item.Source.SourceId
+                </td>
+                <td>
+                    <a href="./Edit/@item.CarId">Edit</a> |
+                    <a href="./Details/@item.CarId">Details</a> |
+                    <a href="./Delete/@item.CarId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
